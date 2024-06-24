@@ -313,27 +313,16 @@ void pure_pursuit::_controlPub()
             double Car_yaw = quaternionToYaw(CarsInfo.poseMsgs[i].pose.pose.orientation); // 他车 yaw 角
             if (Pose_x1 < 0 || Pose_x1 > 16 || Pose_y1 < 0 || Pose_y1 > 16)
                 continue; // 他车在场地外不判断
-            // std::cout << "3333333333333333333" << std::endl;
-            // if (i == 19)
-            // {
-            //     std::cout << "x0" << x0.X << std::endl;
-            //     std::cout << "y0" << x0.Y << std::endl;
-            //     std::cout << "x1" << Pose_x1 << std::endl;
-            //     std::cout << "y1" << Pose_y1 << std::endl;
-            // }
 
             double ang=30;
-            // std::cout<<u2.W<<std::endl;
             if(u2.W*u2.W>1) ang=60;
 
             if (PointInSector2(x0.X, x0.Y, Pose_x1, Pose_y1, x0.phi,2,ang))
             { // 判断是否被该车阻挡了
                 flag = 1;
-                std::cout << "2222222222222222222221" << std::endl;
                 if (PointInSector2(x0.X, x0.Y, Pose_x1, Pose_y1, x0.phi, 1, ang))
                 { // 判断是否处于极度危险区域
                     extreme_danger_flag = 1;
-                    std::cout << "2111111111111111111111" << std::endl;
                 }
                 else
                 {
