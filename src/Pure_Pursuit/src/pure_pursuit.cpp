@@ -304,7 +304,7 @@ void pure_pursuit::_controlPub()
         // geometry_msgs::Quaternion quat=msg.poseMsgs[m_vehicleId].pose.pose.orientation; 
         double yaw= m_yaw;//yaw 
         for (int i = 0; i < 20; i++)
-        { // Car70 ~ Car89
+        {   // Car70 ~ Car89
             if (i == m_vehicleId)
                 continue;                                                                 // 不和本车判断
             double Pose_x1 = CarsInfo.poseMsgs[i].pose.pose.position.x;                   // 他车 x 坐标
