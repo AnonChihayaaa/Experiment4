@@ -110,6 +110,9 @@ void pure_pursuit::ekfStateCallback(const nav_msgs::OdometryConstPtr &msg)
     x0.vy = msg->twist.twist.linear.y;
     x0.r = msg->twist.twist.angular.z;
 
+    // 添加换道逻辑
+    whether_change_route(x0.X, x0.Y);
+
     Eigen::Vector2d targetPos;
     if (false)
     {
@@ -262,6 +265,20 @@ OutPut pure_pursuit::barrier_avoidance_mode(int choice, OutPut u0, double extrem
     return u1;
 }
 
+// 此函数的作用是判断是根据当前位置需要变换路径
+// 添加时间：2024-6-24
+void pure_pursuit::whether_change_route(double x_curr, double y_curr){
+    // 判断受否需要换道的锚点，现场可以再调整
+    double x_anchor = 2.567567568, y_anchor = 0.45946;
+
+    // 这里临界的角度和距离也需要现场调整
+    if(PointInSector3(x_curr, y_curr, x_anchor, y_anchor, 1.0, 30.0)){
+        // 需要换道
+        // 重新加载路径
+        loadRoute("/home/firefly/class/Experiment3/src/Pure_Pursuit/routes/7.json");
+    }
+}
+
 void pure_pursuit::_controlPub()
 {
     double yaw;
@@ -277,6 +294,9 @@ void pure_pursuit::_controlPub()
         x0.X = m_x;
         x0.Y = m_y;
          std::cout<<"xy"<<x0.X<<","<<x0.Y<<std::endl;
+
+        // 添加换道逻辑
+        whether_change_route(x0.X, x0.Y);
 
         Eigen::Vector2d targetPos;
         if (false)
@@ -414,6 +434,26 @@ bool pure_pursuit::PointInSector2(double x, double y, double x1, double y1, doub
         rad1 = 2 * PI - rad1;
     }
     if ((rad1 / PI * 180 < angle1) && dis <= dis1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+// 新加了一个不用传入yaw的版本
+bool pure_pursuit::PointInSector3(double x, double y, double x1, double y1, double dis1, double angle1)
+{
+    double rad = atan2(y1 - y, x1 - x);
+    double dis = hypot(x1 - x, y1 - y);
+    double rad1 = fabs(rad - m_yaw);
+    if (rad1 > PI)
+    {
+        rad1 = 2 * PI - rad1;
+    }
+    if ((rad1 / PI * 180 < 30) && dis <= 2.0)
     {
         return true;
     }

@@ -112,7 +112,9 @@ private:
     double quaternionToYaw(const geometry_msgs::Quaternion& quat);
     bool PointInSector(double x, double y, double x1, double y1, double yaw);
     bool PointInSector2(double x, double y, double x1, double y1, double yaw, double dis1, double angle1);
+    bool PointInSector3(double x, double y, double x1, double y1, double dis1, double angle1);
     OutPut barrier_avoidance_mode(int choice, OutPut u0, double extreme_danger_flag, double dis, double current_yaw, double x, double y, double target_x, double target_y);
+    void whether_change_route(double x_curr, double y_curr);
 };
 
 #endif
