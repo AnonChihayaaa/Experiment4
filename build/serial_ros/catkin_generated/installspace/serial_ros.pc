@@ -1,8 +1,0 @@
-prefix=/home/firefly/class/Experiment3/install
-
-Name: serial_ros
-Description: Description of serial_ros
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: roscpp std_msgs message_runtime

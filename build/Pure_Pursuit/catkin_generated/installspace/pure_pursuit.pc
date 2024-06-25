@@ -1,8 +1,0 @@
-prefix=/home/firefly/class/Experiment3/install
-
-Name: pure_pursuit
-Description: Description of pure_pursuit
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: roscpp message_runtime

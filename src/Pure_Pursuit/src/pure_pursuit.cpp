@@ -293,7 +293,7 @@ void pure_pursuit::_controlPub()
         x0.phi = m_yaw;
         x0.X = m_x;
         x0.Y = m_y;
-         std::cout<<"xy"<<x0.X<<","<<x0.Y<<std::endl;
+        std::cout<<"xy"<<x0.X<<","<<x0.Y<<std::endl;
 
         // 添加换道逻辑
         whether_change_route(x0.X, x0.Y);
@@ -335,7 +335,19 @@ void pure_pursuit::_controlPub()
                 continue; // 他车在场地外不判断
 
             double ang=30;
-            if(u2.W*u2.W>1) ang=60;
+            // 判断检查角度范围(4.json)
+            if (x0.X < 58/37 && x0.Y < (592-520)/37) 
+                ang=60;
+            else if (x0.X > 86/37 && x0.Y < (592-520)/37)
+                ang=60;
+            else if (x0.X > 86/37 && x0.Y > (592-70)/37)
+                ang=60;
+            else if (x0.X < 58/37 && x0.Y > (592-70)/37)
+                ang=60;
+
+            // 判断检查角度范围(7.json)
+            if (x0.Y < 520/37 && x0.Y > (592-70)/37) 
+                ang=60;
 
             if (PointInSector2(x0.X, x0.Y, Pose_x1, Pose_y1, x0.phi,2,ang))
             { // 判断是否被该车阻挡了
